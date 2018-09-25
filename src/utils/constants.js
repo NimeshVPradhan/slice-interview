@@ -9,3 +9,5 @@ Array.prototype.getWordList = function(chars){
   })
   return list;
 }
+
+export const outputpanelregex = /\bclass\b|\bfunction\b|\bvar\b|'.*?'|".*?"/g 
