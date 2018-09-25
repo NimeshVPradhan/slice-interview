@@ -4,10 +4,10 @@ Array.prototype.getWordList = function(chars){
   var list = [];
   this.forEach(word=>{
     if(word.includes(chars)){
-      list.push(list);
+      list.push(word);
     }
   })
   return list;
 }
 
-export const outputpanelregex = /\bclass\b|\bfunction\b|\bvar\b|'.*?'|".*?"/g 
+export const outputpanelregex = /\bclass\b|\bfunction\b|\bvar\b|'.*?'|".*?"| ((\+|\-)?[0-9]+.?[0-9])+/g
