@@ -11,9 +11,18 @@ class InputPanel extends Component{
   }
 
   handleChange = (event) => {
-    var last = event.target.value.trim().split(' ').slice(-1);
-    var options = validList.getWordList(last);
-    //console.log(last,options);
+    var last = event.target.value.trim().split(/\s+|\n|\r/g).slice(-1);
+    var options = [];
+
+    if(last[0]==='o' && last.length===1){
+      options.push('obj');
+    }else if(last=='obj.'){
+      options.push(...['foo1','foo2']);
+    }else if(last=='obj.foo2.'){
+      options.push(...['foo3']);
+    }
+    options.push(...validList.getWordList(last));
+
     this.setState({
       options: options
     })
@@ -22,7 +31,11 @@ class InputPanel extends Component{
 
   handleClick =(word) =>{
     var newText = this.props.text.split(' ');
-    newText[newText.length-1] = word;
+     if(newText[newText.length-1].match(/obj.(foo[1|2])?/g)){
+       word = newText[newText.length-1]+word;
+//       console.log(word, newText[newText.length-1].match(/\w+.?$/g));
+     }
+    newText[newText.length-1]=newText[newText.length-1].replace(/\w+.?$/g, word);
     this.props.handleChange(newText.join(' '));
   }
 
