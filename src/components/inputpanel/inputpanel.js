@@ -11,7 +11,12 @@ class InputPanel extends Component{
   }
 
   handleChange = (event) => {
-    var last = event.target.value.trim().split(/\s+|\n|\r/g).slice(-1);
+
+    this.props.handleChange(event.target.value);
+  }
+
+  static getDerivedStateFromProps(nextProps){
+    var last = nextProps.text.trim().split(/\s+|\n|\r/g).slice(-1);
     var options = [];
 
     if(last[0]==='o' && last.length===1){
@@ -23,20 +28,19 @@ class InputPanel extends Component{
     }
     options.push(...validList.getWordList(last));
 
-    this.setState({
-      options: options
+    return({
+      options:options
     })
-    this.props.handleChange(event.target.value);
   }
 
   handleClick =(word) =>{
     var newText = this.props.text.split(' ');
-     if(newText[newText.length-1].match(/obj.(foo[1|2])?/g)){
-       word = newText[newText.length-1]+word;
-//       console.log(word, newText[newText.length-1].match(/\w+.?$/g));
-     }
-    newText[newText.length-1]=newText[newText.length-1].replace(/\w+.?$/g, word);
-    this.props.handleChange(newText.join(' '));
+    if(newText[newText.length-1].match(/obj.(foo[1|2].)?/g)){
+      word = newText[newText.length-1].match(/\w+.$/g)+word;
+    }
+      newText[newText.length-1]=newText[newText.length-1].replace(/\w+.?$/g, word);
+      this.props.handleChange(newText.join(' '));
+    
   }
 
   render(){
@@ -45,13 +49,13 @@ class InputPanel extends Component{
     )
     return(
       <div>
-        <span>Input:</span>
-        <hr/>
-        <textarea onChange={this.handleChange} value={this.props.text} rows='15' cols='25'>
-        </textarea>
-        <ul className='list-group'>
-        {options}
-        </ul>
+      <span>Input:</span>
+      <hr/>
+      <textarea onChange={this.handleChange} value={this.props.text} rows='15' cols='25'>
+      </textarea>
+      <ul className='list-group'>
+      {options}
+      </ul>
       </div>
     )
   }
