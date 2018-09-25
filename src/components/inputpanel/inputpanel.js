@@ -13,15 +13,17 @@ class InputPanel extends Component{
   handleChange = (event) => {
     var last = event.target.value.trim().split(' ').slice(-1);
     var options = validList.getWordList(last);
-    console.log(last,options);
+    //console.log(last,options);
     this.setState({
       options: options
     })
     this.props.handleChange(event.target.value);
   }
 
-  handleClick =(event) =>{
-
+  handleClick =(word) =>{
+    var newText = this.props.text.split(' ');
+    newText[newText.length-1] = word;
+    this.props.handleChange(newText.join(' '));
   }
 
   render(){
