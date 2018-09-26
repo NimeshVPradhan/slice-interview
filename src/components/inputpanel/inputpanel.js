@@ -11,7 +11,6 @@ class InputPanel extends Component{
   }
 
   handleChange = (event) => {
-
     this.props.handleChange(event.target.value);
   }
 
@@ -40,7 +39,7 @@ class InputPanel extends Component{
     }
       newText[newText.length-1]=newText[newText.length-1].replace(/\w+.?$/g, word);
       this.props.handleChange(newText.join(' '));
-    
+
   }
 
   render(){

@@ -27,7 +27,7 @@ class OutputPanel extends Component{
       <div>
         <span>Output:</span>
         <hr/>
-        <div className='container border'>
+        <div className='container preborder'>
           <pre className='output-content'></pre>
         </div>
       </div>
