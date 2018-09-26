@@ -1,6 +1,45 @@
 import React, {Component} from 'react';
 import './inputpanel.css';
-import {validList} from '../../utils/constants.js'
+import {validList, obj} from '../../utils/constants.js'
+
+var getList = (last) => {
+  var list = [];
+  //console.log('last', last);
+  if(!last || last==="") return list;
+  list.push(obj[0])
+  for(let i=1; i<obj.length; i++){
+    list.push(obj[0]+'.'+obj[i]);
+  }
+  var op=[];
+  var index = list.indexOf(last.toString().substring(0,last.length-1));
+
+  if(index>=0){
+    for(let i=index+1; i<obj.length; i++){
+      op.push(obj[i]);
+    }
+  }
+
+  return op;
+
+}
+
+var getObjKeys = (last) => {
+  if(last==='o')
+    return ['obj'];
+
+  const list = last.split('.');
+  if(list.length===2){
+      return Object.keys(obj);
+  }
+
+  if(list.length===3){
+      return Object.keys(obj[list[list.length-2]]);
+  }
+  return [];
+}
+
+
+
 
 class InputPanel extends Component{
   constructor(props){
@@ -17,13 +56,10 @@ class InputPanel extends Component{
   static getDerivedStateFromProps(nextProps){
     var last = nextProps.text.trim().split(/\s+|\n|\r/g).slice(-1);
     var options = [];
-
-    if(last[0]==='o' && last.length===1){
-      options.push('obj');
-    }else if(last=='obj.'){
-      options.push(...['foo1','foo2']);
-    }else if(last=='obj.foo2.'){
-      options.push(...['foo3']);
+//    console.log(last);
+    if(last[0]==='o' || last[0].indexOf('obj')===0){
+//      console.log('calling');
+      options.push(...getObjKeys(last[0]));
     }
     options.push(...validList.getWordList(last));
 
