@@ -26,6 +26,7 @@ var getList = (last) => {
 var getObjKeys = (last) => {
   if(last==='o')
     return ['obj'];
+  if(last[last.length-1]!=='.') return [];
 
   const list = last.split('.');
   if(list.length===2){
@@ -33,6 +34,7 @@ var getObjKeys = (last) => {
   }
 
   if(list.length===3){
+    if(typeof obj[list[list.length-2]]!=="object") return [];
       return Object.keys(obj[list[list.length-2]]);
   }
   return [];
@@ -56,9 +58,7 @@ class InputPanel extends Component{
   static getDerivedStateFromProps(nextProps){
     var last = nextProps.text.trim().split(/\s+|\n|\r/g).slice(-1);
     var options = [];
-//    console.log(last);
     if(last[0]==='o' || last[0].indexOf('obj')===0){
-//      console.log('calling');
       options.push(...getObjKeys(last[0]));
     }
     options.push(...validList.getWordList(last));
